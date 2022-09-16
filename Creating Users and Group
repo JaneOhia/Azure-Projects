@@ -1,0 +1,43 @@
+Using Powershell, create user for Bella Dominic with the following code
+
+Create a password profile object
+ $passwordProfile = New-Object -TypeName Microsoft.Open.AzureAD.Model.PasswordProfile
+ 
+ set the value of the password within the profile object
+ $passwordProfile.Password = "Pa55w.rd12345"
+ 
+ connect to Azure Active Directory:
+  Connect-AzureAD
+  
+  run the following to identify the name of your Azure AD tenant:
+ $domainName = ((Get-AzureAdTenantDetail).VerifiedDomains)[0].Name
+ 
+  run the following to create a user account for Bella Dominic
+   New-AzureADUser -DisplayName 'Bella Dominic' -PasswordProfile $passwordProfile -UserPrincipalName "Bella@$domainName" -AccountEnabled $true -MailNickName 'Bella'
+   
+   run the following to list Azure AD users 
+
+  Get-AzureADUser 
+  
+  'Bella Dominic should be on the list
+  
+  
+ To create group on powershell:
+ run the following to create a new security group named IT admins
+ New-AzureADGroup -DisplayName 'IT admins' -MailEnabled $false -SecurityEnabled $true -MailNickName ITadmins 
+ 
+  run the following to list the groups in your Azure AD tenant 
+   Get-AzureADGroup
+   
+   run the following to obtain a reference to the user account of Bella Dominic
+    $user = Get-AzureADUser -Filter "MailNickName eq 'Bella'"
+    
+    
+ run the following to add the user account of Bella to the IT Admins group:
+  Add-AzADGroupMember -MemberUserPrincipalName $user.userPrincipalName -TargetGroupDisplayName "IT Admins" 
+  
+  run the following to verify that the IT Admins group contains the user account of Bella:
+   Get-AzADGroupMember -GroupDisplayName "Junior Admins"
+
+
+ 
